@@ -13,11 +13,16 @@ export default function SearchPage() {
   const [query, setQuery] = React.useState("");
   const [page, setPage] = React.useState(1);
 
-  const { data, isLoading } = useQuery(["search", query, page], async () => {
-    const res = await fetch(`/api/vehicles/search?q=${encodeURIComponent(query)}&page=${page}&perPage=8`);
-    if (!res.ok) throw new Error("Failed to fetch");
-    return res.json();
-  }, { keepPreviousData: true });
+  type SearchResult = { page: number; perPage: number; total: number; totalPages: number; items: any[] };
+
+  const { data, isLoading } = useQuery<SearchResult>({
+    queryKey: ["search", query, page],
+    queryFn: async () => {
+      const res = await fetch(`/api/vehicles/search?q=${encodeURIComponent(query)}&page=${page}&perPage=8`);
+      if (!res.ok) throw new Error("Failed to fetch");
+      return res.json();
+    },
+  });
 
   return (
     <div className="py-8">
@@ -27,18 +32,18 @@ export default function SearchPage() {
         <div className="mt-6">
           {isLoading ? (
             <Loading />
-          ) : !data || data.items.length === 0 ? (
+          ) : !data || (data.items?.length ?? 0) === 0 ? (
             <EmptyState title="Nenhum resultado" description="Tente outra busca" />
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {data.items.map((v: any) => (
+                {data!.items.map((v: any) => (
                   <VehicleCard key={v.id} vehicle={v} />
                 ))}
               </div>
 
               <div className="mt-6 flex items-center justify-center">
-                <Pagination page={data.page} totalPages={data.totalPages} onPage={(p) => setPage(p)} />
+                <Pagination page={data!.page} totalPages={data!.totalPages} onPage={(p) => setPage(p)} />
               </div>
             </>
           )}

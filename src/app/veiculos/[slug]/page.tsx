@@ -9,22 +9,32 @@ import { EmptyState } from "@/components/common/empty-state";
 export default function VehiclePage({ params }: { params: { slug: string } }) {
   const slug = params.slug;
 
-  const { data, isLoading } = useQuery(["vehicle", slug], async () => {
-    const res = await fetch(`/api/vehicles/search?q=&page=1&perPage=50`);
-    const json = await res.json();
-    return json.items.find((i: any) => i.id === slug) ?? json.items[0];
+  type VehicleItem = { id: string; title: string; price?: string; year?: string; km?: string; location?: string } | null;
+
+  const { data, isLoading } = useQuery<VehicleItem>({
+    queryKey: ["vehicle", slug],
+    queryFn: async () => {
+      const res = await fetch(`/api/vehicles/search?q=&page=1&perPage=50`);
+      const json = await res.json();
+      // Find item matching slug (mock)
+      return (json.items.find((i: any) => i.id === slug) ?? json.items[0]) as VehicleItem;
+    },
   });
 
-  const fipeQuery = useQuery(["fipe", data?.id], async () => {
-    if (!data) return null;
-    try {
-      const res = await fetch(`/api/fipe/price/1/1/2010`);
-      if (!res.ok) return null;
-      return res.json();
-    } catch {
-      return null;
-    }
-  }, { enabled: !!data });
+  const fipeQuery = useQuery<any>({
+    queryKey: ["fipe", data?.id],
+    queryFn: async () => {
+      if (!data) return null;
+      try {
+        const res = await fetch(`/api/fipe/price/1/1/2010`);
+        if (!res.ok) return null;
+        return res.json();
+      } catch {
+        return null;
+      }
+    },
+    enabled: !!data,
+  });
 
   if (isLoading) return <Loading />;
   if (!data) return <EmptyState title="Veículo não encontrado" />;
