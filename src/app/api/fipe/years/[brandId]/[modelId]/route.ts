@@ -1,12 +1,27 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getYears } from '@/services/fipe/years';
 
-export async function GET(req: Request, { params }: { params: { brandId: string; modelId: string } }) {
+export async function GET(
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{
+      brandId: string;
+      modelId: string;
+    }>;
+  }
+) {
   try {
-    const { brandId, modelId } = params;
+    const { brandId, modelId } = await params;
+
     const data = await getYears(brandId, modelId);
+
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json({ message: error?.message ?? 'Error fetching years' }, { status: 500 });
+    return NextResponse.json(
+      { message: error?.message ?? 'Error fetching years' },
+      { status: 500 }
+    );
   }
 }
