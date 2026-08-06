@@ -1,15 +1,7 @@
-import { NextResponse } from 'next/server';
-
-export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const q = url.searchParams.get('q') || '';
-  const page = Number(url.searchParams.get('page') || '1');
-  const perPage = Number(url.searchParams.get('perPage') || '10');
-
-  // Simple mock dataset generator
+// Placeholder for future aggregators (Webmotors, Gecko, etc.)
+export async function searchVehicles(q = '', page = 1, perPage = 10) {
   const total = 42;
   const totalPages = Math.ceil(total / perPage);
-
   const items = Array.from({ length: perPage }, (_, i) => {
     const idx = (page - 1) * perPage + i + 1;
     if (idx > total) return null;
@@ -24,9 +16,5 @@ export async function GET(req: Request) {
       href: `/veiculos/${idx}`,
     };
   }).filter(Boolean);
-
-  // Return result in the same shape as services/vehicles.searchVehicles
-  return NextResponse.json({ page, perPage, total, totalPages, items });
-
-  return NextResponse.json({ page, perPage, total, totalPages, items });
+  return { page, perPage, total, totalPages, items };
 }
