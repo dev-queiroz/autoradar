@@ -39,10 +39,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Para que a aplicação entregue anúncios reais e dados externos substituindo os mocks, configure as variáveis de ambiente listadas em `.env.example`:
 
-* GECKO_BASE - Base URL do agregador Gecko/Webmotors (se aplicável)
-* GECKO_API_KEY - Chave de API para o agregador
-* INVERTEXTO_TOKEN - Token para a API Invertexto (usada para FIPE avançado quando disponível)
+* INVERTEXTO_BASE - Base URL da API Invertexto (ex: https://api.invertexto.com/v1)
+* INVERTEXTO_TOKEN - Token para a API Invertexto (usado para FIPE e listagens quando disponíveis)
 
-Sem essas variáveis a rota `/api/vehicles/search` retorna 503 indicando que nenhum provedor está configurado. Após configurar as variáveis, reinicie a aplicação e a pesquisa usará os provedores reais configurados.
+Sem essas variáveis a rota `/api/vehicles/search` retornará 503 indicando que o provedor Invertexto não está configurado. Após configurar as variáveis, reinicie a aplicação e a pesquisa usará a API Invertexto.
 
 Para deploy profissional, recomendo usar Vercel e definir as variáveis de ambiente no painel do projeto. Opcionalmente, configure um cache CDN para as respostas das rotas de FIPE para reduzir latência e evitar rate limits.
