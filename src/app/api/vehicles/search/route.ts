@@ -6,27 +6,15 @@ export async function GET(req: Request) {
   const page = Number(url.searchParams.get('page') || '1');
   const perPage = Number(url.searchParams.get('perPage') || '10');
 
-  // Simple mock dataset generator
-  const total = 42;
-  const totalPages = Math.ceil(total / perPage);
+  // Delegate to aggregator which calls real providers if configured
+  const { aggregateSearch } = await import('@/services/aggregator');
+  const result = await aggregateSearch(q, page, perPage);
 
-  const items = Array.from({ length: perPage }, (_, i) => {
-    const idx = (page - 1) * perPage + i + 1;
-    if (idx > total) return null;
-    return {
-      id: String(idx),
-      title: `${q || 'Veículo'} Modelo ${idx}`,
-      price: `R$ ${ (30000 + idx * 500).toLocaleString('pt-BR') }`,
-      year: `${2010 + (idx % 13)}`,
-      km: `${(50000 + idx * 1234).toLocaleString('pt-BR')} km`,
-      image: null,
-      location: 'São Paulo, SP',
-      href: `/veiculos/${idx}`,
-    };
-  }).filter(Boolean);
+  if (!result) {
+    return NextResponse.json({
+      message: 'No provider configured. Set GECKO_BASE+GECKO_API_KEY or INVERTEXTO_TOKEN in environment variables to enable real search.'
+    }, { status: 503 });
+  }
 
-  // Return result in the same shape as services/vehicles.searchVehicles
-  return NextResponse.json({ page, perPage, total, totalPages, items });
-
-  return NextResponse.json({ page, perPage, total, totalPages, items });
+  return NextResponse.json(result);
 }
