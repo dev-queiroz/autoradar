@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { QueryProvider } from "@/providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider>
           <div className="flex min-h-screen flex-col">
             <Navbar />
 
@@ -45,7 +47,8 @@ export default function RootLayout({
 
             <Footer />
           </div>
-        </ThemeProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
