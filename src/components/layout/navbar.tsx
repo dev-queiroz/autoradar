@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Car } from "lucide-react";
-import { siteConfig } from "@/config/site";
-import { navigation } from "@/constants/navigation";
-import { Container } from "@/components/layout/container";
+import { siteConfig } from "../../config/site";
+import { navigation } from "../../constants/navigation";
+import { Container } from "./container";
 import { ThemeToggle } from "./theme-toggle";
 
 export function Navbar() {

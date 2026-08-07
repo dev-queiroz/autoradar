@@ -1,50 +1,46 @@
 "use client";
 
-import React from "react";
+import { useState, useCallback } from "react";
 
 import { Container } from "@/components/layout/container";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {
+  VehiclePicker,
+  CompareResult,
+  type PickedVehicle,
+} from "@/features/fipe";
 
 export default function ComparePage() {
-  const [left, setLeft] = React.useState("");
-  const [right, setRight] = React.useState("");
-  const [result, setResult] = React.useState<any>(null);
+  const [left, setLeft] = useState<PickedVehicle>(null);
+  const [right, setRight] = useState<PickedVehicle>(null);
 
-  async function handleCompare() {
-    // For now, fetch mock details by id
-    const [lRes, rRes] = await Promise.all([
-      fetch(`/api/vehicles/search?q=&page=1&perPage=50`).then((r) => r.json()),
-      fetch(`/api/vehicles/search?q=&page=1&perPage=50`).then((r) => r.json()),
-    ]);
-
-    const lItem = lRes.items.find((i: any) => i.id === left) ?? null;
-    const rItem = rRes.items.find((i: any) => i.id === right) ?? null;
-    setResult({ left: lItem, right: rItem });
-  }
+  // useCallback evita loop infinito no useEffect do VehiclePicker
+  const handleLeft = useCallback((v: PickedVehicle) => setLeft(v), []);
+  const handleRight = useCallback((v: PickedVehicle) => setRight(v), []);
 
   return (
     <Container>
-      <div className="py-8">
-        <h1 className="text-2xl font-bold">Comparar veículos</h1>
-
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <Input placeholder="ID veículo esquerdo" value={left} onChange={(e) => setLeft(e.target.value)} />
-          <Input placeholder="ID veículo direito" value={right} onChange={(e) => setRight(e.target.value)} />
-          <Button onClick={handleCompare}>Comparar</Button>
+      <div className="py-10 space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Comparar veículos
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Selecione dois veículos pela tabela FIPE e veja a diferença de
+            preço.
+          </p>
         </div>
 
-        {result && (
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="p-4 border rounded">
-              <h3 className="font-semibold">Esquerda</h3>
-              <pre className="text-sm">{JSON.stringify(result.left, null, 2)}</pre>
-            </div>
-            <div className="p-4 border rounded">
-              <h3 className="font-semibold">Direita</h3>
-              <pre className="text-sm">{JSON.stringify(result.right, null, 2)}</pre>
-            </div>
-          </div>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <VehiclePicker label="Veículo A" onChange={handleLeft} />
+          <VehiclePicker label="Veículo B" onChange={handleRight} />
+        </div>
+
+        {left && right ? (
+          <CompareResult left={left} right={right} />
+        ) : (
+          <p className="text-center text-sm text-muted-foreground">
+            Selecione marca, modelo e ano dos dois veículos para comparar.
+          </p>
         )}
       </div>
     </Container>

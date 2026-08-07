@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Container } from "@/components/layout/container";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Container } from "../../../components/layout/container";
 
 export function SearchSection() {
   return (
@@ -14,9 +15,11 @@ export function SearchSection() {
             className="h-12"
           />
 
-          <Button size="lg">
-            <Search className="mr-2 h-4 w-4" />
-            Buscar
+          <Button asChild size="lg">
+            <Link href="/pesquisar">
+              <Search className="mr-2 h-4 w-4" />
+              Buscar
+            </Link>
           </Button>
         </div>
       </Container>

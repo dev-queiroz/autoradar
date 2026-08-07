@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/layout/container";
+import { Button } from "../../../components/ui/button";
+import { Container } from "../../../components/layout/container";
 
 export function CtaSection() {
   return (

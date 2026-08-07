@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { Container } from "@/components/layout/container";
-import { siteConfig } from "@/config/site";
+import { Container } from "./container";
+import { siteConfig } from "../../config/site";
 
 export function Footer() {
   return (
@@ -23,7 +23,9 @@ export function Footer() {
             </Link>
 
             <Link
-              href="/"
+              href={siteConfig.license}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               MIT License

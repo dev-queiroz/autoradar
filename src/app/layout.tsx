@@ -3,11 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
 
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { siteConfig } from "@/config/site";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { QueryProvider } from "@/providers/query-provider";
+import { Navbar } from "../components/layout/navbar";
+import { Footer } from "../components/layout/footer";
+import { siteConfig } from "../config/site";
+import { ThemeProvider } from "../providers/theme-provider";
+import { QueryProvider } from "../providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,25 +28,19 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<RootLayoutProps>) {
+export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryProvider>
           <ThemeProvider>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
 
-            <main className="flex-1">
-              {children}
-            </main>
+              <main className="flex-1">{children}</main>
 
-            <Footer />
-          </div>
+              <Footer />
+            </div>
           </ThemeProvider>
         </QueryProvider>
       </body>

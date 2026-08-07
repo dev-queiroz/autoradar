@@ -1,11 +1,15 @@
-import { NextResponse } from 'next/server';
-import { getBrands } from '@/services/fipe/brands';
+import { NextRequest, NextResponse } from "next/server";
+import { getBrands } from "@/lib/invertexto/brands";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const data = await getBrands();
+    const type = Number(request.nextUrl.searchParams.get("type") || "1");
+    const data = await getBrands(type);
     return NextResponse.json(data);
   } catch (error: any) {
-    return NextResponse.json({ message: error?.message ?? 'Error fetching brands' }, { status: 500 });
+    return NextResponse.json(
+      { message: error?.message ?? "Error fetching brands" },
+      { status: 500 }
+    );
   }
 }

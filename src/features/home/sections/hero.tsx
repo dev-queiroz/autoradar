@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/layout/container";
+import { Button } from "../../../components/ui/button";
+import { Container } from "../../../components/layout/container";
 
 export function Hero() {
   return (
@@ -14,12 +14,11 @@ export function Hero() {
           </span>
 
           <h1 className="mt-6 text-5xl font-bold tracking-tight">
-            Encontre o carro ideal para você.
+            Encontre o veículo ideal para você.
           </h1>
 
           <p className="mt-6 text-lg text-muted-foreground">
-            Compare versões, consulte a FIPE, veja ficha técnica e encontre
-            onde comprar veículos usados em um único lugar.
+            Compare versões, consulte a FIPE, mas fique informado sobre o preço justo antes de comprar.
           </p>
 
           <Button asChild size="lg" className="mt-10">

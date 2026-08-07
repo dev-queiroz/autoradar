@@ -4,8 +4,8 @@ import {
   GitCompareArrows,
 } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Container } from "@/components/layout/container";
+import { Card, CardContent } from "../../../components/ui/card";
+import { Container } from "../../../components/layout/container";
 
 const items = [
   {
@@ -17,11 +17,6 @@ const items = [
     title: "Compare versões",
     description: "Veja as diferenças entre modelos.",
     icon: GitCompareArrows,
-  },
-  {
-    title: "Encontre anúncios",
-    description: "Acesse links para comprar veículos.",
-    icon: CarFront,
   },
 ];
 
