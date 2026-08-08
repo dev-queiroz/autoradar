@@ -1,21 +1,17 @@
-import {
-  BadgeDollarSign,
-  CarFront,
-  GitCompareArrows,
-} from "lucide-react";
+import { BadgeDollarSign, GitCompareArrows } from 'lucide-react';
 
-import { Card, CardContent } from "../../../components/ui/card";
-import { Container } from "../../../components/layout/container";
+import { Card, CardContent } from '../../../components/ui/card';
+import { Container } from '../../../components/layout/container';
 
 const items = [
   {
-    title: "Preço FIPE",
-    description: "Consulte rapidamente o valor atualizado.",
+    title: 'Preço FIPE',
+    description: 'Consulte rapidamente o valor atualizado.',
     icon: BadgeDollarSign,
   },
   {
-    title: "Compare versões",
-    description: "Veja as diferenças entre modelos.",
+    title: 'Compare versões',
+    description: 'Veja as diferenças entre modelos.',
     icon: GitCompareArrows,
   },
 ];
@@ -35,9 +31,7 @@ export function FeaturesSection() {
 
                   <h3 className="font-semibold">{item.title}</h3>
 
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {item.description}
-                  </p>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
                 </CardContent>
               </Card>
             );

@@ -1,10 +1,16 @@
-import { getYears } from "./years";
+import { getYears } from './years';
+import { FipeYear } from './types';
 
-// Resolve price by brand/model/year using Invertexto years endpoint
-export async function getPrice(brandId: string, modelId: string, yearId: string) {
+export async function getPrice(
+  brandId: string,
+  modelId: string,
+  yearId: string
+): Promise<FipeYear> {
   const yearsResp = await getYears(brandId, modelId);
-  // yearsResp should include years array
-  const yearEntry = (yearsResp.years || []).find((y: any) => String(y.year_id) === String(yearId) || String(y.model_year) === String(yearId));
+  const yearEntry = (yearsResp.years || []).find(
+    (y: FipeYear) => String(y.year_id) === String(yearId) || String(y.model_year) === String(yearId)
+  );
+
   if (!yearEntry) throw new Error(`Year ${yearId} not found for model ${modelId}`);
   return yearEntry;
 }

@@ -1,5 +1,0 @@
-commitlint.config.js
-postcss.config.mjs
-tailwind.config.cjs
-.next/
-node_modules/
