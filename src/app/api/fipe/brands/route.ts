@@ -1,15 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getBrands } from "@/lib/invertexto/brands";
+import { NextResponse } from 'next/server';
+import { getBrands } from '@/lib/invertexto';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const type = Number(request.nextUrl.searchParams.get("type") || "1");
-    const data = await getBrands(type);
+    const data = await getBrands();
     return NextResponse.json(data);
-  } catch (error: any) {
-    return NextResponse.json(
-      { message: error?.message ?? "Error fetching brands" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Erro ao buscar marcas';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
