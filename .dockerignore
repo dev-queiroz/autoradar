@@ -1,0 +1,8 @@
+node_modules
+.next
+.git
+.husky
+e2e
+tests
+*.md
+.env*.local
