@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 
-// Mocka as constantes do client diretamente no Vitest
 vi.mock('../client', () => ({
   INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
   INVERTEXTO_TOKEN: 'fake_token',
@@ -29,5 +28,18 @@ describe('Invertexto Brands Service', () => {
 
     expect(result).toEqual(mockBrands);
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+  });
+
+  it('deve lançar um erro se INVERTEXTO_TOKEN não estiver configurado', async () => {
+    vi.resetModules();
+
+    vi.doMock('../client', () => ({
+      INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
+      INVERTEXTO_TOKEN: undefined,
+    }));
+
+    const { getBrands: getBrandsWithoutToken } = await import('../brands');
+
+    await expect(getBrandsWithoutToken(1)).rejects.toThrow('INVERTEXTO_TOKEN is not configured');
   });
 });

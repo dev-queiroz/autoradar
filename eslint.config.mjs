@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     'commitlint.config.js',
     'postcss.config.mjs',
     'tailwind.config.cjs',
+    'coverage/**',
+    'node_modules/**'
   ]),
 ]);
 

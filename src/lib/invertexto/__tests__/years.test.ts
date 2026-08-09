@@ -38,7 +38,6 @@ describe('getYears', () => {
 
     expect(result).toEqual(mockYearsResponse);
     expect(mockedGetModels).toHaveBeenCalledWith('59');
-
     expect(mockedAxios.get).toHaveBeenCalledWith(
       'https://api.invertexto.com/v1/fipe/years/005001-1',
       { params: { token: 'fake_token' } }
@@ -61,5 +60,27 @@ describe('getYears', () => {
     mockedGetModels.mockResolvedValueOnce(mockModelsList);
 
     await expect(getYears('59', '999')).rejects.toThrow('Model 999 not found for brand 59');
+  });
+
+  it('deve tratar com segurança quando getModels retornar null ou undefined', async () => {
+    mockedGetModels.mockResolvedValueOnce(null as unknown as Awaited<ReturnType<typeof getModels>>);
+
+    await expect(getYears('59', '10')).rejects.toThrow('Model 10 not found for brand 59');
+  });
+
+  it('deve lançar erro se INVERTEXTO_TOKEN não estiver configurado', async () => {
+    vi.resetModules();
+    vi.doUnmock('../models');
+
+    vi.doMock('../client', () => ({
+      INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
+      INVERTEXTO_TOKEN: undefined,
+    }));
+
+    const { getYears: getYearsWithoutToken } = await import('../years');
+
+    await expect(getYearsWithoutToken('59', '10')).rejects.toThrow(
+      'INVERTEXTO_TOKEN is not configured'
+    );
   });
 });

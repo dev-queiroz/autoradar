@@ -5,7 +5,7 @@ import { getModels } from '../models';
 vi.mock('axios');
 const mockedAxios = vi.mocked(axios, true);
 
-vi.mock('../client', async () => ({
+vi.mock('../client', () => ({
   INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
   INVERTEXTO_TOKEN: 'fake_token',
 }));
@@ -23,13 +23,24 @@ describe('getModels', () => {
 
     mockedAxios.get.mockResolvedValueOnce({ data: mockModels });
 
-    const brandId = '59';
-    const result = await getModels(brandId);
+    const result = await getModels('59');
 
     expect(result).toEqual(mockModels);
-
     expect(mockedAxios.get).toHaveBeenCalledWith('https://api.invertexto.com/v1/fipe/models/59', {
       params: { token: 'fake_token' },
     });
+  });
+
+  it('deve lançar um erro se INVERTEXTO_TOKEN não estiver configurado', async () => {
+    vi.resetModules();
+
+    vi.doMock('../client', () => ({
+      INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
+      INVERTEXTO_TOKEN: undefined,
+    }));
+
+    const { getModels: getModelsWithoutToken } = await import('../models');
+
+    await expect(getModelsWithoutToken('59')).rejects.toThrow('INVERTEXTO_TOKEN is not configured');
   });
 });

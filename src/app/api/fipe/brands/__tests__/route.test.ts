@@ -15,4 +15,26 @@ describe('GET /api/fipe/brands', () => {
     expect(response.status).toBe(200);
     expect(body).toEqual(mockData);
   });
+
+  it('deve retornar status 500 e mensagem de erro caso getBrands lance uma exceção', async () => {
+    vi.spyOn(invertextoService, 'getBrands').mockRejectedValueOnce(
+      new Error('Erro ao buscar marcas')
+    );
+
+    const response = await GET();
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body).toEqual({ error: 'Erro ao buscar marcas' });
+  });
+
+  it('deve retornar a mensagem padrão caso o erro lançado não seja uma instância de Error', async () => {
+    vi.spyOn(invertextoService, 'getBrands').mockRejectedValueOnce('Erro em string pura');
+
+    const response = await GET();
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body).toEqual({ error: 'Erro ao buscar marcas' });
+  });
 });
