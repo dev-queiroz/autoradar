@@ -5,7 +5,7 @@ import { getModels } from '../models';
 vi.mock('axios');
 const mockedAxios = vi.mocked(axios, true);
 
-vi.mock('../client', async (importOriginal) => ({
+vi.mock('../client', async () => ({
   INVERTEXTO_BASE: 'https://api.invertexto.com/v1',
   INVERTEXTO_TOKEN: 'fake_token',
 }));
